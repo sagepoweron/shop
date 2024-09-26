@@ -1,0 +1,64 @@
+﻿@model CartVM
+
+@{
+    ViewData["Title"] = "View Cart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Cart</h1>
+
+<table class="table">
+    <thead>
+		<tr>
+			<th>
+				Product
+			</th>
+            <th>
+                Amount
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Sub Total
+            </th>
+            <th>
+                @* buttons *@
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.CartItems)
+        {
+			<tr>
+				<td>
+					@Html.DisplayFor(x => item.Product.Name)
+				</td>
+                <td>
+                    @Html.DisplayFor(x => item.Amount)
+                </td>
+                <td>
+                    @* @Html.DisplayFor(x => item.Product.ListPrice) *@
+                    @item.Product.ListPrice.ToString("C")
+                </td>
+                <td>
+                    @* @item.Product.Price *@
+                    @* $@Html.DisplayFor(x => x.Total) *@
+                    @item.GetTotal().ToString("C")
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    Number of Items: @Model.Amount
+</div>
+<div>
+	Total: @Model.Total.ToString("C")
+</div>
