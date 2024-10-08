@@ -1,35 +1,37 @@
-﻿@model IEnumerable<Shop.Models.Product>
+﻿@model Shop.Areas.Customer.Views.Products.GamesVM
 
 @{
-    ViewData["Title"] = "List";
+    ViewData["Title"] = "Games";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>List</h1>
+<a asp-controller="Products" asp-action="Index">Products</a>
+
+<h1>Games</h1>
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Brand)
+                Brand
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                Description
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ListPrice)
+                List Price
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SalePrice)
+                Sale Price
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Games) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)

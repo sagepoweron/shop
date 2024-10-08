@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Shop.Data;
+using Shop.Logic;
 using Shop.Models;
 
 namespace Shop.Areas.Admin.Controllers

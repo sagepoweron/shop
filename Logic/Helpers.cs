@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shop.Data
+namespace Shop.Logic
 {
-	public static class Helpers
-	{
-		public const string Admin_Role = "Admin";
-		public const string Customer_Role = "Customer";
-	}
+    public static class Helpers
+    {
+        public const string Admin_Role = "Admin";
+        public const string Customer_Role = "Customer";
+    }
 
     public readonly struct Currency
     {
@@ -22,7 +22,7 @@ namespace Shop.Data
             _amount = amount;
         }
 
-        public decimal Amount { get => _amount; }
+        public decimal Amount => _amount;
 
         public override string ToString()
             => $"${_amount}";

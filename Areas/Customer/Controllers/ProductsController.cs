@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Shop.Areas.Customer.Views.Products;
 using Shop.Data;
 using Shop.Models;
 
@@ -51,7 +52,7 @@ namespace Shop.Areas.Customer.Controllers
 
 
 
-        public async Task<IActionResult> List(string? id)
+        public async Task<IActionResult> Games(string? id)
         {
             List<Product> products;
 
@@ -64,8 +65,13 @@ namespace Shop.Areas.Customer.Controllers
                 products = await _context.Product.Where(item => item.Brand == id).ToListAsync();
             }
 
+			GamesVM vm = new()
+			{
+				Games = products
+			};
 
-            return View(products);
+
+			return View(vm);
         }
     }
 }

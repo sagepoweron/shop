@@ -125,7 +125,8 @@ namespace Shop.Areas.Customer.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CartItemExists(cartItem.Id))
+                    if (!_context.CartItem.Any(e => e.Id == cartItem.Id))
+                    //if (!CartItemExists(cartItem.Id))
                     {
                         return NotFound();
                     }
@@ -187,34 +188,36 @@ namespace Shop.Areas.Customer.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Product
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var product = await _context.Product.FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
                 return NotFound();
             }
 
-            List<CartItem> cart_items = await _context.CartItem.Include(c => c.Product).ToListAsync();
 
-            CartItem? existing_cart_item = cart_items.FirstOrDefault(cart_item => cart_item.Product.Id == id);
-            if (existing_cart_item != null)
+            CartItem? cart_item = await _context.CartItem.FirstOrDefaultAsync(m => m.ProductId == id);
+            if (cart_item != null)
             {
-                existing_cart_item.Amount++;
+                cart_item.Amount++;
 
             }
             else
             {
-                CartItem cartItem = new()
+                cart_item = new()
                 {
                     Product = product,
                     Amount = 1
                 };
-                await _context.CartItem.AddAsync(cartItem);
+                await _context.CartItem.AddAsync(cart_item);
             }
 
 			await _context.SaveChangesAsync();
 
 			return RedirectToAction(nameof(Index));
         }
+
+
+
+
     }
 }

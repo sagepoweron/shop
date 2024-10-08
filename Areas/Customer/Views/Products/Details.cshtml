@@ -5,6 +5,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div><a asp-area="Customer" asp-controller="Products" asp-action="Index">Products</a></div>
+
 <h1>Details</h1>
 
 <div>
@@ -38,6 +40,6 @@
     </dl>
 </div>
 <div>
-	<a asp-controller="Cart" asp-action="Add" asp-route-id=@Model.Id>Add To Cart</a> |
-    <a asp-action="Index">Back to List</a>
+	<a asp-controller="Cart" asp-action="Add" asp-route-id=@Model.Id>Add To Cart</a>
+@*     | <a asp-action="Index">Back to List</a> *@
 </div>

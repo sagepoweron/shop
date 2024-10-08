@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shop.Data
+namespace Shop.Logic
 {
     public class EmailSender : IEmailSender
     {

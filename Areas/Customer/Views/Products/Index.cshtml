@@ -5,6 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@* <a asp-area="Customer" asp-controller="Products" asp-action="Games">Games</a> *@
+<a asp-controller="Products" asp-action="Games">Games</a>
+
 <h1>Index</h1>
 
 <table class="table">
@@ -56,6 +59,8 @@
             </td> *@
             <td>
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                |
+				<a asp-controller="Cart" asp-action="Add" asp-route-id=@item.Id>Add To Cart</a>
             </td>
         </tr>
 }

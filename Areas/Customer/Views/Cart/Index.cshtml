@@ -32,7 +32,9 @@
         {
 			<tr>
 				<td>
-					@Html.DisplayFor(x => item.Product.Name)
+@* 					@Html.DisplayFor(x => item.Product.Name)
+                    <a asp-controller="Products" asp-action="Details" asp-route-id=@item.ProductId>Details</a> *@
+                    <a asp-controller="Products" asp-action="Details" asp-route-id=@item.ProductId>@item.Product.Name</a>
 				</td>
                 <td>
                     @Html.DisplayFor(x => item.Amount)
