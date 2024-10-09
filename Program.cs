@@ -34,6 +34,9 @@ namespace Shop
             builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
             builder.Services.AddRazorPages();
 
+            //fix login url
+            builder.Services.ConfigureApplicationCookie(options => options.LoginPath = "/Identity/Account/Login");
+
             //118
             builder.Services.AddScoped<IEmailSender, EmailSender>();
 

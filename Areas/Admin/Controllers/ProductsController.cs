@@ -13,7 +13,7 @@ using Shop.Models;
 namespace Shop.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = Helpers.Admin_Role)]
+    //[Authorize(Roles = Helpers.Admin_Role)]
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
