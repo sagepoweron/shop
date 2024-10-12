@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Shop.Models.Other
+namespace Shop.Models
 {
     public class Image
     {

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Shop.Areas.Customer.Views.Products;
+using Shop.Areas.Customer.Models;
 using Shop.Data;
 using Shop.Models;
 
@@ -24,7 +24,8 @@ namespace Shop.Areas.Customer.Controllers
         // GET: Customer/Products
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Product.ToListAsync());
+            var applicationDbContext = _context.Product.Include(p => p.Category);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Customer/Products/Details/5
@@ -36,6 +37,7 @@ namespace Shop.Areas.Customer.Controllers
             }
 
             var product = await _context.Product
+                .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {

@@ -1,6 +1,6 @@
 ﻿using Shop.Models;
 
-namespace Shop.Areas.Customer.Views.Products
+namespace Shop.Areas.Customer.Models
 {
     public class GamesVM
     {

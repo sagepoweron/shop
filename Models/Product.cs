@@ -1,5 +1,4 @@
-﻿using Shop.Data;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Shop.Models
@@ -9,10 +8,10 @@ namespace Shop.Models
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
 
-        //[Display(Name = "Category ID")]
-        //public Guid CategoryId { get; set; }
-        //[ForeignKey(nameof(CategoryId))]
-        //public Category? Category { get; set; }
+        [Display(Name = "Category ID")]
+        public Guid CategoryId { get; set; }
+        [ForeignKey(nameof(CategoryId))]
+        public Category? Category { get; set; }
 
         [Required]
         public string Name { get; set; } = "Default";

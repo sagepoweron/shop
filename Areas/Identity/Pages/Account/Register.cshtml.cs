@@ -125,7 +125,8 @@ namespace Shop.Areas.Identity.Pages.Account
         public async Task OnGetAsync(string returnUrl = null)
         {
             //118
-            if (!_roleManager.RoleExistsAsync(Helpers.Admin_Role).GetAwaiter().GetResult())
+            if (!_roleManager.Roles.Any())
+                //if (!_roleManager.RoleExistsAsync(Helpers.Admin_Role).GetAwaiter().GetResult())
             {
                 await _roleManager.CreateAsync(new IdentityRole(Helpers.Admin_Role));
                 await _roleManager.CreateAsync(new IdentityRole(Helpers.Customer_Role));

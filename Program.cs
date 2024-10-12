@@ -22,8 +22,7 @@ namespace Shop
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("Test") ?? throw new InvalidOperationException("Connection string 'Test' not found.");
             //var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString));
+            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -33,9 +32,14 @@ namespace Shop
             //119
             builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
             builder.Services.AddRazorPages();
-
-            //fix login url
-            builder.Services.ConfigureApplicationCookie(options => options.LoginPath = "/Identity/Account/Login");
+            
+            //120
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Identity/Account/Login";
+                options.LogoutPath = "/Identity/Account/Logout";
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+            });
 
             //118
             builder.Services.AddScoped<IEmailSender, EmailSender>();

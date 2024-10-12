@@ -1,4 +1,6 @@
-﻿namespace Shop.Models
+﻿using Shop.Models;
+
+namespace Shop.Areas.Customer.Models
 {
     public class CartVM
     {

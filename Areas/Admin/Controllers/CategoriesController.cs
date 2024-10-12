@@ -11,23 +11,22 @@ using Shop.Models;
 namespace Shop.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class ProductsController : Controller
+    public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ProductsController(ApplicationDbContext context)
+        public CategoriesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Admin/Products
+        // GET: Admin/Categories
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Product.Include(p => p.Category);
-            return View(await applicationDbContext.ToListAsync());
+            return View(await _context.Category.ToListAsync());
         }
 
-        // GET: Admin/Products/Details/5
+        // GET: Admin/Categories/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -35,43 +34,40 @@ namespace Shop.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Product
-                .Include(p => p.Category)
+            var category = await _context.Category
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
+            if (category == null)
             {
                 return NotFound();
             }
 
-            return View(product);
+            return View(category);
         }
 
-        // GET: Admin/Products/Create
+        // GET: Admin/Categories/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name");
             return View();
         }
 
-        // POST: Admin/Products/Create
+        // POST: Admin/Categories/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CategoryId,Name,Brand,Description,ListPrice,SalePrice")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Name,DisplayOrder")] Category category)
         {
             if (ModelState.IsValid)
             {
-                product.Id = Guid.NewGuid();
-                _context.Add(product);
+                category.Id = Guid.NewGuid();
+                _context.Add(category);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", product.CategoryId);
-            return View(product);
+            return View(category);
         }
 
-        // GET: Admin/Products/Edit/5
+        // GET: Admin/Categories/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -79,23 +75,22 @@ namespace Shop.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Product.FindAsync(id);
-            if (product == null)
+            var category = await _context.Category.FindAsync(id);
+            if (category == null)
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", product.CategoryId);
-            return View(product);
+            return View(category);
         }
 
-        // POST: Admin/Products/Edit/5
+        // POST: Admin/Categories/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,CategoryId,Name,Brand,Description,ListPrice,SalePrice")] Product product)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,DisplayOrder")] Category category)
         {
-            if (id != product.Id)
+            if (id != category.Id)
             {
                 return NotFound();
             }
@@ -104,12 +99,12 @@ namespace Shop.Areas.Admin.Controllers
             {
                 try
                 {
-                    _context.Update(product);
+                    _context.Update(category);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductExists(product.Id))
+                    if (!CategoryExists(category.Id))
                     {
                         return NotFound();
                     }
@@ -120,11 +115,10 @@ namespace Shop.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", product.CategoryId);
-            return View(product);
+            return View(category);
         }
 
-        // GET: Admin/Products/Delete/5
+        // GET: Admin/Categories/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -132,35 +126,34 @@ namespace Shop.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Product
-                .Include(p => p.Category)
+            var category = await _context.Category
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
+            if (category == null)
             {
                 return NotFound();
             }
 
-            return View(product);
+            return View(category);
         }
 
-        // POST: Admin/Products/Delete/5
+        // POST: Admin/Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var product = await _context.Product.FindAsync(id);
-            if (product != null)
+            var category = await _context.Category.FindAsync(id);
+            if (category != null)
             {
-                _context.Product.Remove(product);
+                _context.Category.Remove(category);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductExists(Guid id)
+        private bool CategoryExists(Guid id)
         {
-            return _context.Product.Any(e => e.Id == id);
+            return _context.Category.Any(e => e.Id == id);
         }
     }
 }
