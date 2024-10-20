@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +15,11 @@ namespace Shop.Areas.Customer.Controllers
 {
     [Area("Customer")]
 	//[Authorize(Roles = Helpers.Customer_Role)]
-	public class CartController : Controller
+	public class CartControllerTest : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public CartController(ApplicationDbContext context)
+        public CartControllerTest(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -63,30 +64,41 @@ namespace Shop.Areas.Customer.Controllers
             return View(cartItem);
         }
 
-        // GET: Customer/CartItems/Create
-        public IActionResult Create()
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Create(CartItem cart_item)
         {
-            ViewData["ProductId"] = new SelectList(_context.Product, "Id", "Name");
-            return View();
+            cart_item.Id = Guid.NewGuid();
+
+            //ClaimsIdentity claims_identity = (ClaimsIdentity)User.Identity;
+            //string user_id = claims_identity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            CartItem? cart_item_db = await _context.CartItem.FirstOrDefaultAsync(m => m.ProductId == cart_item.ProductId/* && m.UserId == user_id*/);
+            if (cart_item_db != null)
+            {
+                cart_item_db.Amount++;
+            }
+            else
+            {
+                await _context.CartItem.AddAsync(cart_item);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index), nameof(CartController));
         }
 
-        // POST: Customer/CartItems/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ProductId,Amount")] CartItem cartItem)
-        {
-            if (ModelState.IsValid)
-            {
-                cartItem.Id = Guid.NewGuid();
-                _context.Add(cartItem);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["ProductId"] = new SelectList(_context.Product, "Id", "Name", cartItem.ProductId);
-            return View(cartItem);
-        }
+
+
+
+
+
+
+
+
+
+
+
 
         // GET: Customer/CartItems/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
@@ -182,63 +194,10 @@ namespace Shop.Areas.Customer.Controllers
         }
 
 
-        public async Task<IActionResult> Add(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Product.FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-
-            CartItem? cart_item = await _context.CartItem.FirstOrDefaultAsync(m => m.ProductId == id);
-            if (cart_item != null)
-            {
-                cart_item.Amount++;
-
-            }
-            else
-            {
-                cart_item = new()
-                {
-                    Product = product,
-                    Amount = 1
-                };
-                await _context.CartItem.AddAsync(cart_item);
-            }
-
-			await _context.SaveChangesAsync();
-
-			return RedirectToAction(nameof(Index));
-        }
+        
 
 
 
-        [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> Add2(CartItem cart_item)
-        {
-            //ClaimsIdentity claims_identity = (ClaimsIdentity)User.Identity;
-            //string user_id = claims_identity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            CartItem? cart_item_db = await _context.CartItem.FirstOrDefaultAsync(m => m.ProductId == cart_item.ProductId/* && m.UserId == user_id*/);
-            if (cart_item_db != null)
-            {
-                cart_item_db.Amount++;
-            }
-            else
-            {
-                await _context.CartItem.AddAsync(cart_item);
-            }
-
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Index), nameof(CartController));
-        }
     }
 }

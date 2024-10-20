@@ -5,11 +5,18 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@* <a asp-area="Customer" asp-controller="Products" asp-action="Games">Games</a> *@
-@* <a asp-controller="Products" asp-action="Games">Games</a> *@
-
 <h1>Products</h1>
 
+<form asp-controller="Products" asp-action="Index" method="get">
+    <p>
+@*         <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-search"></i> Category </span>
+            <input type="text" name="category" />
+        </div> *@
+		<label><i class="bi bi-search"></i> Category <input type="text" name="category" /></label>
+        <input type="submit" value="Filter" />
+    </p>
+</form>
 <table class="table">
     <thead>
         <tr>

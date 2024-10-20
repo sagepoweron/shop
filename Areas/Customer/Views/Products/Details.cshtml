@@ -37,6 +37,14 @@
         </dd>
     </dl>
 </div>
+
+@* @using (Html.BeginForm("Add2", "Cart", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.Name)
+    @Html.HiddenFor(m => m.CategoryId);
+    <input type="submit" value="Add To Cart"/>
+} *@
+
 <div>
 	<a asp-controller="Cart" asp-action="Add" asp-route-id=@Model.Id>Add To Cart</a>
 @*     | <a asp-action="Index">Back to List</a> *@
